@@ -59,7 +59,7 @@
         <field name="name">By Product</field>
         <field name="model_id">sale.custom.report.base</field>
         <field name="user_id" eval="False"/>
-        <field name="context">{'group_by': ['date:month', 'product_id']}</field>
+<!--        <field name="context">{'group_by': ['date:month', 'product_id']}</field>-->
     </record>
 
     <record id="view_order_product_custom_search" model="ir.ui.view">
@@ -75,7 +75,7 @@
                 <separator/>
                 <filter string="My Sales" help="My Sales" domain="[('user_id','=',uid)]"/>
                 <field name="partner_id"/>
-                <field name="product_id"/>
+<!--                <field name="product_id"/>-->
                 <field name="user_id"/>
                 <group expand="0" string="Extended Filters">
                     <field name="categ_id"/>

@@ -1,28 +1,8 @@
-# -*- encoding: utf-8 -*-
-##############################################################################
-#Copyright (c) 2015 - Present Teckzilla Software Solutions Pvt. Ltd. All Rights Reserved
-#    Author: [Teckzilla Software Solutions]  <[sales@teckzilla.net]>
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    A copy of the GNU General Public License is available at:
-#    <http://www.gnu.org/licenses/gpl.html>.
-#
-##############################################################################
-
 {
     "name" : "Ebay Connector",
     "version" : "1.1.1",
     "depends" : ["base","product","sale",'base_ecommerce_v11','website'],
-    "author" : "TeckZilla",
+    "author" : "Planet Odoo",
     "description": """
         Ebay Management\n
         Provide Integration with Amazon\n
@@ -33,7 +13,7 @@
         Import Price/Stock\n
         Export Price/Stock\n
     """,
-    "website" : "www.teckzilla.net",
+    "website" : "www.planet-odoo.com",
     'images': [],
     "category" : "ecommerce",
     'summary': 'Ebay integration',
