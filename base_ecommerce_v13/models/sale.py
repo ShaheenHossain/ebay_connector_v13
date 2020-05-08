@@ -1093,6 +1093,7 @@ class sale_shop(models.Model):
 class sale_order(models.Model):
     _inherit = 'sale.order'
 
+    product_id = fields.Many2one('product.product', 'Product', readonly=True)
     shop_id = fields.Many2one('sale.shop', string="Shop")
     unique_sales_rec_no = fields.Char(string="Order Unique ID", size=100)
     external_transaction_id = fields.Char(string="External Transaction ID", size=64, readonly=True)

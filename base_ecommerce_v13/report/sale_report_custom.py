@@ -8,17 +8,17 @@ class sale_custom_report_base(osv.osv):
     _order = 'date desc'
     #    _rec_name = 'date'
 
-    date = fields.Datetime('Date Order', readonly=True),  # TDE FIXME master= rename into date_order
-    date_confirm = fields.Date('Date Confirm', readonly=True),
-    product_id = fields.Many2one('product.product', 'Product', readonly=True),
-    product_uom = fields.Many2one('product.uom', 'Unit of Measure', readonly=True),
-    product_uom_qty = fields.Float('# of Qty', readonly=True),
-    partner_id = fields.Many2one('res.partner', 'Partner', readonly=True),
-    company_id = fields.Many2one('res.company', 'Company', readonly=True),
-    user_id = fields.Many2one('res.users', 'Salesperson', readonly=True),
-    price_total = fields.Float('Total Price', readonly=True),
-    delay = fields.Float('Commitment Delay', digits=(16, 2), readonly=True),
-    categ_id = fields.Many2one('product.category', 'Category of Product', readonly=True),
+    date = fields.Datetime('Date Order', readonly=True)  # TDE FIXME master= rename into date_order
+    date_confirm = fields.Date('Date Confirm', readonly=True)
+    product_id = fields.Many2one('product.product', 'Product', readonly=True)
+    product_uom = fields.Many2one('product.uom', 'Unit of Measure', readonly=True)
+    product_uom_qty = fields.Float('# of Qty', readonly=True)
+    partner_id = fields.Many2one('res.partner', 'Partner', readonly=True)
+    company_id = fields.Many2one('res.company', 'Company', readonly=True)
+    user_id = fields.Many2one('res.users', 'Salesperson', readonly=True)
+    price_total = fields.Float('Total Price', readonly=True)
+    delay = fields.Float('Commitment Delay', digits=(16, 2), readonly=True)
+    categ_id = fields.Many2one('product.category', 'Category of Product', readonly=True)
     nbr = fields.Integer('# of Lines', readonly=True),  # TDE FIXME master= rename into nbr_lines
     state = fields.Selection([
         ('draft', 'Quotation'),
@@ -28,12 +28,12 @@ class sale_custom_report_base(osv.osv):
         ('invoice_except', 'Invoice Exception'),
         ('done', 'Done'),
         ('cancel', 'Cancelled')
-    ], 'Order Status', readonly=True),
-    pricelist_id = fields.Many2one('product.pricelist', 'Pricelist', readonly=True),
-    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', readonly=True),
-    section_id = fields.Many2one('crm.case.section', 'Sales Team', readonly=True),
-    shop_id = fields.Many2one('sale.shop', 'Shop', readonly=True),
-    payment_method_id = fields.Many2one('payment.method.ecommerce', 'Payment Method', readonly=True),
+    ], 'Order Status', readonly=True)
+    pricelist_id = fields.Many2one('product.pricelist', 'Pricelist', readonly=True)
+    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', readonly=True)
+    section_id = fields.Many2one('crm.case.section', 'Sales Team', readonly=True)
+    shop_id = fields.Many2one('sale.shop', 'Shop', readonly=True)
+    payment_method_id = fields.Many2one('payment.method.ecommerce', 'Payment Method', readonly=True)
 
     def init(self, cr):
         tools.drop_view_if_exists(cr, 'sale_custom_report_base')

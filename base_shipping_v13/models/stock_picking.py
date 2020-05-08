@@ -1,24 +1,3 @@
-# -*- encoding: utf-8 -*-
-##############################################################################
-#    Copyright (c) 2015 - Present Teckzilla Software Solutions Pvt. Ltd. All Rights Reserved
-#    Author: [Teckzilla Software Solutions]  <[sales@teckzilla.net]>
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    A copy of the GNU General Public License is available at:
-#    <http://www.gnu.org/licenses/gpl.html>.
-#
-##############################################################################
-
-
 from odoo import models, fields, api, _
 from odoo.exceptions import Warning
 import datetime
@@ -26,7 +5,9 @@ import base64
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_round
 import logging
+
 logger = logging.getLogger(__name__)
+
 
 class stock_picking(models.Model):
     _inherit = 'stock.picking'
@@ -53,7 +34,6 @@ class stock_picking(models.Model):
     # replacing with old one this is already in delivery module
     # carrier_tracking_ref = fields.Char(string='Carrier Tracking Reference', copy=False)
 
-
     length = fields.Integer(string='Package Length (mm)', default='1')
     width = fields.Integer(string='Package Width (mm)', default='1')
     height = fields.Integer(string='Package Height (mm)', default='1')
@@ -65,7 +45,7 @@ class stock_picking(models.Model):
         ('draft', 'Draft'),
         ('waiting', 'Waiting Another Operation'),
         ('confirmed', 'Waiting'),
-        ('needs_package_details','Needs Package Details'),
+        ('needs_package_details', 'Needs Package Details'),
         ('assigned', 'Ready'),
         ('done', 'Done'),
         ('cancel', 'Cancelled'),
@@ -78,17 +58,17 @@ class stock_picking(models.Model):
              " * Done: has been processed, can't be modified or cancelled anymore.\n"
              " * Cancelled: has been cancelled, can't be confirmed anymore.")
     # to hide and show shipping setting, shipping info tabs in internal transfer picking
-    picking_internal_type=fields.Char(compute='_compute_picking_type',string='internal type')
+    picking_internal_type = fields.Char(compute='_compute_picking_type', string='internal type')
 
     @api.depends('picking_type_id')
     def _compute_picking_type(self):
-        if self.picking_type_id and ('Sequence internal' in self.picking_type_id.sequence_id.name or 'Sequence in' in self.picking_type_id.sequence_id.name):
-            self.picking_internal_type=False
+        if self.picking_type_id and (
+                'Sequence internal' in self.picking_type_id.sequence_id.name or 'Sequence in' in self.picking_type_id.sequence_id.name):
+            self.picking_internal_type = False
         elif self.picking_type_id:
             self.picking_internal_type = True
         else:
             self.picking_internal_type = False
-
 
     # For needs package details
     @api.depends('move_type', 'move_lines.state', 'move_lines.picking_id')
@@ -104,7 +84,9 @@ class stock_picking(models.Model):
         else:
             relevant_move_state = self.move_lines._get_relevant_state_among_moves()
             if relevant_move_state == 'partially_available':
-                if 'Sequence internal' in self.picking_type_id.sequence_id.name or 'Sequence in' in self.picking_type_id.sequence_id.name or (self.origin and 'Return of' in self.origin) or self.picking_type_id.code in ['incoming','mrp_operation']:
+                if 'Sequence internal' in self.picking_type_id.sequence_id.name or 'Sequence in' in self.picking_type_id.sequence_id.name or (
+                        self.origin and 'Return of' in self.origin) or self.picking_type_id.code in ['incoming',
+                                                                                                     'mrp_operation']:
                     self.state = 'assigned'
                 elif not self.shipping_weight or not self.length or not self.width or not self.height:
                     if self.picking_type_id.warehouse_id.delivery_steps == 'pick_pack_ship':
@@ -124,7 +106,9 @@ class stock_picking(models.Model):
             else:
 
                 if relevant_move_state == 'assigned':
-                    if 'Sequence internal' in self.picking_type_id.sequence_id.name or 'Sequence in' in self.picking_type_id.sequence_id.name or (self.origin and 'Return of' in self.origin) or self.picking_type_id.code in ['incoming',                                                                                                         'mrp_operation']:
+                    if 'Sequence internal' in self.picking_type_id.sequence_id.name or 'Sequence in' in self.picking_type_id.sequence_id.name or (
+                            self.origin and 'Return of' in self.origin) or self.picking_type_id.code in ['incoming',
+                                                                                                         'mrp_operation']:
                         self.state = relevant_move_state
                     elif not self.shipping_weight or not self.length or not self.width or not self.height:
                         if self.picking_type_id.warehouse_id.delivery_steps == 'pick_pack_ship':
@@ -149,27 +133,27 @@ class stock_picking(models.Model):
         for picking in self:
             if self._context.get('planned_picking') and picking.state == 'draft':
                 picking.show_validate = False
-            elif picking.state not in ('draft', 'confirmed', 'assigned','needs_package_details') or not picking.is_locked:
+            elif picking.state not in (
+                    'draft', 'confirmed', 'assigned', 'needs_package_details') or not picking.is_locked:
                 picking.show_validate = False
             else:
                 picking.show_validate = True
 
     def update_tracking_ref(self):
-        order_id=self.env['sale.order'].search([('name','=',self.origin)])
-        vals={'carrier_id':self.carrier_id.id}
+        order_id = self.env['sale.order'].search([('name', '=', self.origin)])
+        vals = {'carrier_id': self.carrier_id.id}
         if self.carrier_tracking_ref:
-            vals['carrier_tracking_ref']=self.carrier_tracking_ref
+            vals['carrier_tracking_ref'] = self.carrier_tracking_ref
         else:
             vals['carrier_tracking_ref'] = self.origin
         order_id.write(vals)
         return True
 
-
     @api.depends('move_line_ids')
     def _compute_bulk_weight(self):
         weight = 0.0
         packop = False
-        normal=False
+        normal = False
         for move_line in self.move_line_ids:
             if move_line.product_id and not move_line.result_package_id:
                 weight += move_line.product_uom_id._compute_quantity(move_line.qty_done,
@@ -186,7 +170,7 @@ class stock_picking(models.Model):
         else:
             self.weight_bulk = self.weight
 
-    def create_attachment(self,pick_id,attach_id):
+    def create_attachment(self, pick_id, attach_id):
         filename = pick_id.name or pick_id.origin
         filename += '.pdf'
         data_attach = {
@@ -204,21 +188,24 @@ class stock_picking(models.Model):
         else:
             return False
 
-
     def new_action_done(self):
         if not self.carrier_tracking_ref:
             self.env['update.base.picking'].with_context({'picking_id': self.id}).create_shipment()
+
     def base_manifest(self):
         for picking in self:
-            manifest_obj=self.env['base.manifest']
+            manifest_obj = self.env['base.manifest']
             # need to check state
             # if picking.carrier_id.select_service.name == 'Royalmail':
             #     return
 
-            current_date=datetime.datetime.now().strftime('%Y-%m-%d')
-            manifest_id=manifest_obj.search([('service_provider','=',picking.carrier_id.select_service.name),('state','=','draft'),('date','=',current_date)])
+            current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+            manifest_id = manifest_obj.search(
+                [('service_provider', '=', picking.carrier_id.select_service.name), ('state', '=', 'draft'),
+                 ('date', '=', current_date)])
             if manifest_id:
-                update_manifest_id = manifest_id[0].write({'manifest_lines':[(0, 0, {'picking_id': picking.id, 'carrier_id': picking.carrier_id.id})]})
+                update_manifest_id = manifest_id[0].write(
+                    {'manifest_lines': [(0, 0, {'picking_id': picking.id, 'carrier_id': picking.carrier_id.id})]})
                 if update_manifest_id == True:
                     return manifest_id[0]
             else:
@@ -228,14 +215,14 @@ class stock_picking(models.Model):
                     'user_id': picking._uid,
                     'base_manifest_ref': datetime.datetime.now().strftime("%m-%d-%Y"),
                     'base_manifest_desc': picking.carrier_id.select_service.name,
-                    'manifest_lines':[(0, 0, {'picking_id': picking.id, 'carrier_id': picking.carrier_id.id})]
+                    'manifest_lines': [(0, 0, {'picking_id': picking.id, 'carrier_id': picking.carrier_id.id})]
                 })
                 return created_manifest_id
 
     def action_done(self):
         picking_obj = self.env['stock.picking']
         picking_attach = self.env['ir.attachment']
-        if self.picking_type_id.code in ['incoming','mrp_operation']:
+        if self.picking_type_id.code in ['incoming', 'mrp_operation']:
             res = super(stock_picking, self).action_done()
         elif 'Sequence internal' in self.picking_type_id.sequence_id.name or 'Sequence in' in self.picking_type_id.sequence_id.name:
             res = super(stock_picking, self).action_done()
@@ -292,7 +279,8 @@ class stock_picking(models.Model):
                                                          'carrier_id': pick_id.carrier_id.id, 'shipment_created': True,
                                                          'faulty': False, 'error_log': ''}
                                             if pick_ship_has_attach_id:
-                                                delivery_attach_id = self.create_attachment(pick_id, pick_ship_has_attach_id)
+                                                delivery_attach_id = self.create_attachment(pick_id,
+                                                                                            pick_ship_has_attach_id)
                                                 if delivery_attach_id:
                                                     data_vals['label_generated'] = True
 
@@ -347,7 +335,8 @@ class stock_picking(models.Model):
                                                     [('res_id', '=', pick.id), ('res_name', '=', pick.name)])
                                                 if pick.carrier_tracking_ref or pack_ship_has_attach_id or pick.shipment_created:
                                                     data_vals = {'carrier_tracking_ref': pick.carrier_tracking_ref,
-                                                                 'carrier_id': pick.carrier_id.id, 'shipment_created': True,
+                                                                 'carrier_id': pick.carrier_id.id,
+                                                                 'shipment_created': True,
                                                                  'faulty': False, 'error_log': ''}
                                                     if pack_ship_has_attach_id:
                                                         delivery_attach_id = self.create_attachment(pick,
@@ -376,13 +365,13 @@ class stock_picking(models.Model):
                                     else:
                                         return
 
-
     def total_amount(self):
-        sale_order_id=self.env['sale.order'].search([('name','=',self.origin)])
+        sale_order_id = self.env['sale.order'].search([('name', '=', self.origin)])
         if sale_order_id:
             return sale_order_id.amount_total
         else:
             return 0.0
+
 
 class url_class(models.Model):
     _name = "url.class"
@@ -397,24 +386,24 @@ class stock_move(models.Model):
     def _get_new_picking_values(self):
         """ Prepares a new picking for this move as it could not be assigned to
         another picking. This method is designed to be inherited. """
-        length=0
-        width=0
-        height=0
+        length = 0
+        width = 0
+        height = 0
         if self.origin:
-            sale_id=self.env['sale.order'].search([('name','=',self.origin)])
-            heavy_weight=0.00
-            product_id=False
+            sale_id = self.env['sale.order'].search([('name', '=', self.origin)])
+            heavy_weight = 0.00
+            product_id = False
 
             for line in sale_id.order_line:
                 # if line.product_id.weight:
                 if line.product_id.weight >= heavy_weight:
-                    heavy_weight= line.product_id.weight
+                    heavy_weight = line.product_id.weight
                     product_id = line.product_id
             if product_id:
                 # prod_id=self.env['product.product'].browse('product_id')
-                length=product_id.length
-                width=product_id.width
-                height=product_id.height
+                length = product_id.length
+                width = product_id.width
+                height = product_id.height
         return {
             'origin': self.origin,
             'company_id': self.company_id.id,
@@ -423,7 +412,7 @@ class stock_move(models.Model):
             'picking_type_id': self.picking_type_id.id,
             'location_id': self.location_id.id,
             'location_dest_id': self.location_dest_id.id,
-            'length':length,
-            'width':width,
-            'height':height
+            'length': length,
+            'width': width,
+            'height': height
         }

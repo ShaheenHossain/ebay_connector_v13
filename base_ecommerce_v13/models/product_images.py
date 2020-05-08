@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 # TODO add the posibility to move from a store system to an other (example : moving existing image on database to file system)
 
 class product_images(models.Model):
-    "Products Image gallery"
+    """Products Image gallery"""
     _name = "product.images"
     _description = __doc__
     _table = "product_images"
@@ -81,7 +81,7 @@ class product_images(models.Model):
                     try:
                         f = open(full_path, 'rb')
                         print("--------wot-link----")
-                        img = base64.encodestring(f.read())
+                        img = base64.encodebytes(f.read())
                         # img = base64.b64encode(f.read())
                         f.close()
                     except Exception as e:
@@ -145,8 +145,5 @@ class product_images(models.Model):
     comments = fields.Text(string='Comments')
     product_id = fields.Many2one('product.product', string='Product')
 
-
 #    _sql_constraints = [('uniq_name_product_id', 'UNIQUE(product_id, name)',
 #                _('A product can have only one image with the same product Name'))]
-
-product_images()
