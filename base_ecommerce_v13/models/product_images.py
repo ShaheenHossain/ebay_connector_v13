@@ -106,12 +106,12 @@ class product_images(models.Model):
         return res
 
     def _check_filestore(self, image_filestore):
-        '''check if the filestore is created, if not it create it automatically'''
+        """check if the filestore is created, if not it create it automatically"""
         try:
             if not os.path.isdir(image_filestore):
                 os.makedirs(image_filestore)
         except Exception as e:
-            raise UserError(_('The image filestore can not be created, %s' % e))
+            raise UserError(_('The image file store can not be created, %s' % e))
         return True
 
     def _save_file(self, path, filename, b64_file):
