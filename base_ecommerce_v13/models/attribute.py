@@ -46,15 +46,9 @@ class product_attribute_set(models.Model):
     attribute_ids = fields.One2many('product.attribute', 'attr_set_id', string='Attributes')
 
 
-product_attribute_set()
-
-
 class product_attribute_info(models.Model):
     _name = "product.attribute.info"
 
     name = fields.Many2one('product.attribute', string='Attribute', required=True)
     value = fields.Many2one('product.attribute.value', string='Values')
     value_text = fields.Text(string='Text')
-
-
-product_attribute_info()

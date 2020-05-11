@@ -29,9 +29,6 @@ class ecommerce_logs(models.Model):
         return True
 
 
-ecommerce_logs()
-
-
 class res_company(models.Model):
     _inherit = "res.company"
 
@@ -46,4 +43,3 @@ class res_company(models.Model):
         return user.company_id.local_media_repository
 
 
-res_company()

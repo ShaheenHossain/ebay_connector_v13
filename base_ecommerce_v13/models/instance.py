@@ -25,7 +25,8 @@ class sales_channel_instance(models.Model):
 
     name = fields.Char(string='Name', size=64, required=True)
     module_id = fields.Selection(_get_installed_module, string='Module', size=100)
-    image = fields.Binary(compute='_get_default_image')
+    # image = fields.Binary(compute='_get_default_image')
+    image = fields.Image(string="Image", max_width=64, max_height=64)
 
     @api.model
     def get_module_id(self, module_id):
@@ -33,11 +34,11 @@ class sales_channel_instance(models.Model):
 
     @api.model
     def _get_default_image(self):
-        colorize, image_path, image = False, False, False
 
         # if partner_type in ['other'] and parent_id:
         #     parent_image = self.browse(parent_id).image
         #     image = parent_image and parent_image.decode('base64') or None
+        image, image_path, colorize = False, False, False
 
         if self.module_id == 'amazon_odoo_v11':
             image_path = get_module_resource('base_ecommerce_v13', 'static/images', 'amazon_logo.png')
@@ -64,7 +65,7 @@ class sales_channel_instance(models.Model):
 
         # self.image = tools.image_resize_image_big(image.encode('base64'))
         # self.image = base64.b64encode(image).decode('ascii')
-        self.image = tools.image_resize_image_small(base64.b64encode(open(image_path, 'rb').read()))
+        self.image = base64.b64encode(open(image_path, 'rb').read())
 
     def create_stores(self):
         """ For create store of Sales Channel """
@@ -89,9 +90,6 @@ class sales_channel_instance(models.Model):
         return shop_id
 
 
-sales_channel_instance()
-
-
 class module_selection(models.Model):
     """ Manage selection for Multi Sales Channel"""
     _name = "module.selection"
@@ -101,6 +99,3 @@ class module_selection(models.Model):
     is_installed = fields.Boolean(string='install')
     no_instance = fields.Integer(string='Instance')
     code = fields.Integer(string='Code')
-
-
-module_selection()

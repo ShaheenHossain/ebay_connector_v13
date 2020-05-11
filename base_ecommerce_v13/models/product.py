@@ -1,11 +1,12 @@
 from odoo import api, fields, models, _
 
 
+def get_allocation():
+    return True
+
+
 class product_product(models.Model):
     _inherit = 'product.product'
-
-    def get_allocation(self):
-        return True
 
     @api.model
     def copy(self, id, default=None):
@@ -56,9 +57,6 @@ class product_product(models.Model):
                                             string='Allocation History', readonly=True)
 
 
-product_product()
-
-
 class product_allocation_history(models.Model):
     _name = 'product.allocation.history'
 
@@ -68,4 +66,3 @@ class product_allocation_history(models.Model):
     qty_allocate = fields.Float(string='Allocated Quantity', readonly=True)
 
 
-product_product()

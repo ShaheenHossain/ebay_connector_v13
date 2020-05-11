@@ -1050,7 +1050,8 @@ class sale_shop(models.Model):
                 un_imported_items.append(sku_missing.get('ItemID').strip('[]'))
                 un_imported_items = list(set(un_imported_items))
             raise UserError(
-                "Unable to import orders with the following item id's due to missing SKU's. \n Please update product SKU's and try again.\n %s" % un_imported_items)
+                "Unable to import orders with the following item id's due to missing SKU's. "
+                "\n Please update product SKU's and try again.\n %s" % un_imported_items)
 
         return order_ids
 
@@ -1104,7 +1105,6 @@ class sale_order(models.Model):
     track_exported = fields.Boolean(string="Track Exported", default=False)
     sent_thanksemail = fields.Boolean(string="Sent Thanks Email")
     product_details = fields.Many2one('product.product', related='order_line.product_id', string='Product')
-
     products_sku = fields.Char(related='product_id.default_code')
     products_name = fields.Char(related='product_id.name', string='Product')
     products_image = fields.Binary(related='product_id.image')
@@ -1161,13 +1161,7 @@ class sale_order(models.Model):
         return statement_id
 
 
-sale_order()
-
-
 class sale_order_line(models.Model):
     _inherit = "sale.order.line"
 
     unique_sales_line_rec_no = fields.Char(string="Sales Line Record Number", size=256)
-
-
-sale_order_line()

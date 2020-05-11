@@ -7,12 +7,12 @@ class account_invoice(models.Model):
     _inherit = "account.move"
 
     def invoice_pay_customer_base(self):
-        ''' 
+        """
         This function is used to have invoice auto paid is payment method defined
         parameters:
             No Parameters
 
-        '''
+        """
         context = self._context.copy()
         if context is None:
             context = {}
@@ -31,7 +31,7 @@ class account_invoice(models.Model):
                 [('date_start', '<=', currentTime), ('date_stop', '>=', currentTime),
                  ('company_id', '=', saleorder_link.company_id.id)])
             if not period_id:
-                raise osv.except_osv(_('Error !'), _('Period is not defined.'))
+                raise osv.except_osv
             else:
                 period_id = period_id[0].id
             context['type'] = 'out_invoice'
@@ -44,7 +44,7 @@ class account_invoice(models.Model):
             acc_id = journal.default_credit_account_id and journal.default_credit_account_id.id or False
             if not acc_id:
                 raise self.wizard.except_wizard(_('Error !'),
-                                           _('Your journal must have a default credit and debit account.'))
+                                                _('Your journal must have a default credit and debit account.'))
 
             paid = True
             currency_id = self._get_currency()
@@ -63,6 +63,3 @@ class account_invoice(models.Model):
         self.env['account.move'].action_move_line_create([voucher_id])
         self._cr.commit()
         return True
-
-
-account_invoice()

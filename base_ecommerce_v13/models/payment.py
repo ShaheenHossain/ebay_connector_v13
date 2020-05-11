@@ -103,6 +103,3 @@ class pay_invoice(models.Model):
                 # voucher_id.signal_workflow('proforma_voucher')
 
         return True
-
-
-pay_invoice()

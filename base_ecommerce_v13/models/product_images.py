@@ -135,7 +135,7 @@ class product_images(models.Model):
         return id.write({'file_db_store': value})
 
     name = fields.Char(string='Image Title', size=100, required=True)
-    extention = fields.Char(string='file extention', size=6)
+    extention = fields.Char(string='file extension', size=6)
     link = fields.Boolean(string='Link?',
                           help="Images can be linked from files on your file system or remote (Preferred)",
                           default=False)
