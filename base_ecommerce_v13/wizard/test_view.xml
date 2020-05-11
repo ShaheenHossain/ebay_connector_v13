@@ -46,11 +46,10 @@
 
         <act_window name="Update Order Status new"
             res_model="update.carrier.marketplace"
-            src_model="sale.order"
+            binding_model="sale.order"
             view_mode="form"
             target="new"
             context="{'search_default_in_location':1}"
-            key2="client_action_multi"
             id="action_view_update_carrier_new_marketplace"/>
             
     </data>

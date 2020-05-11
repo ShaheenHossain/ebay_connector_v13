@@ -1,11 +1,12 @@
+import json
+import logging
+import random
+import time
+
+import requests
+
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-import time
-import random
-import requests
-import json
-from datetime import datetime, date
-import logging
 
 logger = logging.getLogger(__name__)
 

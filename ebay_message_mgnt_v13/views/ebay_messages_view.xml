@@ -6,7 +6,6 @@
             <field name="name">ebay.messages.form.view</field>
             <field name="model">ebay.messages</field>
             <field name="arch" type="xml">
-                
                 <form string="Ebay Listing" version="7.0" >
                     <header>
                         <button name="reply" string="Reply" type="object" />

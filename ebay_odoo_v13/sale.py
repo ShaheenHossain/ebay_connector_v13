@@ -1,17 +1,16 @@
-from odoo.osv import osv
-from odoo import models, fields, api, _
-import time
-import random
-import datetime
-import base64, urllib.request
-from base64 import b64decode
-import datetime
-from datetime import timedelta
-from odoo.tools.translate import _
-import odoo.netsvc
-import os
+import base64
 import csv
+import datetime
 import logging
+import os
+import random
+import time
+import urllib.request
+from datetime import timedelta
+
+from odoo import models, fields, api
+from odoo.osv import osv
+from odoo.tools.translate import _
 
 logger = logging.getLogger(__name__)
 
@@ -22,9 +21,6 @@ class ebay_store_category(models.Model):
     name = fields.Char(string='Name', size=256)
     category_id = fields.Char(string='Category ID', size=256)
     shop_id = fields.Many2one('sale.shop', string='Shop')
-
-
-ebay_store_category()
 
 
 class sale_shop(models.Model):
@@ -46,7 +42,7 @@ class sale_shop(models.Model):
     ebay_paid = fields.Boolean(string='Ebay Paid')
 
     def relist_item(self, shop_id, sku, itemId, qty, price=0.0):
-        '''
+        """
         This function is used to Relist item on Ebay
         parameters:
             shop_id :- integer
@@ -54,7 +50,7 @@ class sale_shop(models.Model):
             itemId :- integer
             qty :- integer
             price :- integer
-        '''
+        """
         context = self._context.copy()
 
         if context is None:
@@ -105,12 +101,12 @@ class sale_shop(models.Model):
         return result
 
     def verify_relist_item(self, shop_id, itemId):
-        '''
+        """
         This function is used to verify the item relisted
         parameters:
             shop_id :- integer
             itemId :- integer
-        '''
+        """
         context = self._context.copy()
         ebayerp_osv_obj = self.env['ebayerp.osv']
         inst_lnk = self.browse(shop_id).instance_id
@@ -123,11 +119,11 @@ class sale_shop(models.Model):
         return result
 
     def get_ebay_store_category(self):
-        '''
+        """
         This function is used to get ebay store categories
         parameters:
             No Parameters
-        '''
+        """
         context = self._context.copy()
         shop_obj = self
         connection_obj = self.env['ebayerp.osv']
@@ -175,11 +171,11 @@ class sale_shop(models.Model):
         return True
 
     def import_ebay_orders(self):
-        '''
+        """
         This function is used to Import Ebay orders
         parameters:
             No Parameter
-        '''
+        """
         context = self._context.copy()
         log_vals = {}
         connection_obj = self.env['ebayerp.osv']
@@ -266,11 +262,11 @@ class sale_shop(models.Model):
         return True
 
     def import_ebay_customer_messages(self):
-        '''
+        """
         This function is used to Import Ebay customer messages
         parameters:
            No Parameter
-        '''
+        """
         context = self._context.copy()
         connection_obj = self.env['ebayerp.osv']
         mail_obj = self.env['mail.thread']
@@ -323,11 +319,11 @@ class sale_shop(models.Model):
         return True
 
     def import_listing_csv_ebay(self):
-        '''
+        """
         This function is used to import ebay orders through CSV
         parameters:
             No Parameter
-        '''
+        """
         context = self._context.copy()
         li = []
         list_obj = self.env['ebay.product.listing']
@@ -344,8 +340,7 @@ class sale_shop(models.Model):
                         product_ids = prod_obj.search([('default_code', '=', line['StockSKU'])])
                         if product_ids:
                             li.remove(line['StockSKU'])
-                            if shop_name.name.lower().find(line['Source'].lower()) != -1 and line[
-                                'Sub Source'].lower() == "ebay0":
+                            if shop_name.name.lower().find(line['Source'].lower()) != -1 and line['Sub Source'].lower() == "ebay0":
                                 vals = {
                                     'name': line['ChannelId'],
                                     'ebay_title': line['ChannelItemName'],
@@ -358,12 +353,12 @@ class sale_shop(models.Model):
         return True
 
     def import_ebay_product(self, itemId, sku):
-        '''
+        """
         This function is used to Import Ebay Products
         parameters:
             itemId :- integer
             sku :- char (unique product code)
-        '''
+        """
         context = self._context.copy()
         ebayerp_osv_obj = self.env['ebayerp.osv']
         inst_lnk = self.instance_id
@@ -372,7 +367,7 @@ class sale_shop(models.Model):
 
     def createListing(self, shop_id, product_id, product_sku, itemID):
 
-        '''
+        """
         This function is used to Listing Product on Ebay
         parameters:
             itemId :- integer
@@ -380,7 +375,7 @@ class sale_shop(models.Model):
             itemId :- integer
             itemId :- integer
             sku :- integer (product sku)
-        '''
+        """
         context = self._context.copy()
         shop_obj = self.env['sale.shop']
         product_listing_obj = self.env['ebay.product.listing']
@@ -487,13 +482,13 @@ class sale_shop(models.Model):
         return True
 
     def import_listing(self, shop_id, product_id, resultvals):
-        '''
+        """
         This function is used to Import Listing from ebay
         parameters:
             shop_id :- integer
             product_id :- integer
             resultvals :- dictionary of the product data
-        '''
+        """
         context = self._context.copy()
         if isinstance(shop_id, int):
             shop_obj = self.env['sale.shop'].browse(shop_id)
@@ -509,13 +504,13 @@ class sale_shop(models.Model):
         return super(sale_shop, self).import_listing(shop_id, product_id, resultvals)
 
     def update_ebay_order_status(self):
-        '''
+        """
         This function is used to update order status on Ebay
         parameters:
             No Parameter
-        '''
+        """
         context = self._context.copy()
-        if context == None:
+        if context is None:
             context = {}
         offset = 0
         inst_lnk = self.instance_id
@@ -598,17 +593,17 @@ class sale_shop(models.Model):
         return True
 
     def handleMissingItems(self, id, missed_resultvals):
-        '''
+        """
         This function is used to Handle missing items during ebay order import
         parameters:
             missed_resultvals :- dictionary of all the missing order data
-        '''
+        """
         context = self._context.copy()
         count = 0
         product_obj = self.env['product.product']
         product_listing_obj = self.env['ebay.product.listing']
 
-        while (missed_resultvals):
+        while missed_resultvals:
             '''  count is to make sure loop doesn't go into endless iteraiton '''
             count = count + 1
             if count > 3:
@@ -666,11 +661,11 @@ class sale_shop(models.Model):
         return True
 
     def import_ebay_listing(self):
-        '''
+        """
         This function is used to Import ebay Listings
         parameters:
             No Parameter
-        '''
+        """
         context = self._context.copy()
         product_obj = self.env['product.product']
 
@@ -764,7 +759,7 @@ class sale_shop(models.Model):
         return True
 
     def import_ebay_price(self, product_sku, item_id, start_price, qty, shop_id):
-        '''
+        """
         This function is used to Import ebay product price
         parameters:
             product_sku :- char (product unique code)
@@ -772,7 +767,7 @@ class sale_shop(models.Model):
             start_price :- integer
             qty :- integer
             shop_id :- integer
-        '''
+        """
         context = self._context.copy()
         shop = self.browse(shop_id)
         product_obj = self.env['product.product']
@@ -815,7 +810,8 @@ class sale_shop(models.Model):
             if not qty and context.get('is_automation', False):
                 self.with_context(context).endEbayListing(shop_id, product_sku, item_id)
                 end_listing = True
-                listing_ids = product_listing_obj.search([('product_id', '=', product_ids[0]), ('name', '=', item_id)])
+                listing_ids = product_listing_obj.search(
+                    [('product_id', '=', self.product_ids[0]), ('name', '=', item_id)])
                 if listing_ids:
                     listing_ids.write({'active_ebay': False})
                 log = 'Listing Ended'
@@ -859,11 +855,11 @@ class sale_shop(models.Model):
         return False
 
     def export_stock_and_price(self):
-        '''
+        """
         This function is used to Export stock and Price on ebay
         parameters:
             No Parameter
-        '''
+        """
         context = self._context.copy()
         connection_obj = self.env['ebayerp.osv']
         ebay_prod_list_obj = self.env['ebay.product.listing']
@@ -871,7 +867,7 @@ class sale_shop(models.Model):
         update_stock = context.get('update_stock', False)
         update_price = context.get('update_price', False)
 
-        if context == None:
+        if context is None:
             context = {}
 
         context.update({'from_date': datetime.datetime.now()})
@@ -886,7 +882,7 @@ class sale_shop(models.Model):
                 [('active_ebay', '=', True), ('shop_id', '=', data.id), ('name', '!=', False)])
 
         if isinstance(listing_ids, list) or isinstance(listing_ids, int):
-            listing_browse_data = ebay_prod_list_obj.browse(cr, uid, listing_ids)
+            listing_browse_data = ebay_prod_list_obj.browse(self.cr, self.uid, listing_ids)
         else:
             listing_browse_data = listing_ids
         for ebay_list_data in listing_browse_data:

@@ -44,8 +44,8 @@ class product_product(models.Model):
             image_id = self.get_main_image(id)
             if image_id:
                 #                image = img_obj.browse(cr, uid, image_id, context=context)
-                image = image_id
-                id.product_image = image.file
+                # image = image_id
+                id.product_image = image_id.file
             else:
                 id.product_image = False
 

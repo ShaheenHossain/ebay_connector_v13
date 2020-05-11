@@ -41,15 +41,7 @@ class stock_picking(models.Model):
     customer_postcode = fields.Char(related='partner_id.zip')
     customer_country = fields.Many2one(related='partner_id.country_id')
     is_wizard_weight = fields.Boolean('Wizard weight')
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('waiting', 'Waiting Another Operation'),
-        ('confirmed', 'Waiting'),
-        ('needs_package_details', 'Needs Package Details'),
-        ('assigned', 'Ready'),
-        ('done', 'Done'),
-        ('cancel', 'Cancelled'),
-    ], string='Status', compute='_compute_state',
+    state = fields.Selection(selection_add=[('needs_package_details', 'Needs Package Details')], string='Status', compute='_compute_state',
         copy=False, index=True, readonly=True, store=True, track_visibility='onchange',
         help=" * Draft: not confirmed yet and will not be scheduled until confirmed.\n"
              " * Waiting Another Operation: waiting for another move to proceed before it becomes automatically available (e.g. in Make-To-Order flows).\n"

@@ -1,6 +1,6 @@
-from odoo import models, fields, api, _
-import odoo.netsvc
 import logging
+
+from odoo import models, fields
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +11,7 @@ class stock_move(models.Model):
 
     def action_done(self):
         context = self._context.copy()
-        if context == None:
+        if context is None:
             context = {}
         action_done = super(stock_move, self).action_done()
         real_time_update_listing = []
@@ -42,14 +42,8 @@ class stock_move(models.Model):
         return action_done
 
 
-stock_move()
-
-
 class stock_picking(models.Model):
     _name = "stock.picking"
     _inherit = "stock.picking"
 
     track_exported = fields.Boolean(string='Tracking Exported')
-
-
-stock_picking()

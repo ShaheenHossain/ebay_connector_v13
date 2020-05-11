@@ -21,11 +21,10 @@
         
         <act_window name="Update Marketplaces Stocks and Prices"
             res_model="update.marketplace.price"
-            src_model="product.product"
+            binding_model="product.product"
             view_mode="form"
             target="new"
             context="{'search_default_in_location':1}"
-            key2="client_action_multi"
             id="action_marketplaces_stock_and_prices"/>
     </data>
 </odoo>

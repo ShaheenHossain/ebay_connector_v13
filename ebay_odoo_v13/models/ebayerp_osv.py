@@ -6,6 +6,7 @@ import requests
 import json
 from ebaysdk.exception import ConnectionError
 from ebaysdk.trading import Connection as Trading
+
 reload(sys)
 # not neede in python3 setdefaultencoding(latin)
 # sys.setdefaultencoding( "latin-1" )
@@ -62,11 +63,10 @@ class Session:
 class Call:
     """ # just a stub """
     RequestData = "<xml />"
-    Data=""
-    File=""
+    Data = ""
+    File = ""
     DetailLevel = "0"
     SiteID = "0"
-
 
     def MakeCall(self, CallName):
         """specify the connection to the eBay Sandbox environment
@@ -74,28 +74,28 @@ class Call:
         """
         # conn = httplib.HTTPSConnection(self.Session.Server)
         self.request = None
-        self.session=requests.session()
-        response1=''
+        self.session = requests.session()
+        response1 = ''
         conn = http.client.HTTPSConnection(self.Session.Server)
         if CallName == 'UploadSiteHostedPictures':
             # conn.request("POST", self.Session.Command, self.RequestData,
             #              self.GenerateHeaders_upload_picture(self.Session, CallName, len(self.RequestData)))
-            request=Request("POST",
-                    'https://api.ebay.com/ws/api.dll',
-                    data=self.Data,
-                    headers=self.GenerateHeaders_upload_picture(self.Session, CallName, len(self.RequestData)),
-                    files=self.File,
-                    )
-            self.request=request.prepare()
-            response1 =  self.session.send(self.request,
-                                              verify=True,
-                                              allow_redirects=True
-                                              )
+            request = Request("POST",
+                              'https://api.ebay.com/ws/api.dll',
+                              data=self.Data,
+                              headers=self.GenerateHeaders_upload_picture(self.Session, CallName,
+                                                                          len(self.RequestData)),
+                              files=self.File,
+                              )
+            self.request = request.prepare()
+            response1 = self.session.send(self.request,
+                                          verify=True,
+                                          allow_redirects=True
+                                          )
         else:
             conn.request("POST", self.Session.Command, self.RequestData, self.GenerateHeaders(self.Session, CallName))
 
-
-        data=''
+        data = ''
         if response1:
             if response1.status_code == requests.codes.ok:
                 data = response1.text
@@ -113,7 +113,7 @@ class Call:
         TODO: Return a real exception and log when this happens
         """
         tag = responseDOM.getElementsByTagName('Error')
-        if (tag.count != 0):
+        if tag.count != 0:
             for error in tag:
                 print("\n")
 
@@ -133,14 +133,14 @@ class Call:
         #
         # }
         headers = {
-                      "X-EBAY-API-COMPATIBILITY-LEVEL": "747",
-                      "X-EBAY-API-DEV-NAME": Session.Developer,
-                      "X-EBAY-API-IAF-TOKEN": Session.Token,
-                      "X-EBAY-API-APP-NAME": Session.Application,
-                      "X-EBAY-API-CERT-NAME": Session.Certificate,
-                      "User-Agent": 'eBaySDK/2.1.5 Python/3.5.2 Linux/4.4.0-104-generic',
-                      "X-EBAY-API-CALL-NAME": CallName,
-                      "X-EBAY-API-SITEID": self.SiteID,
+            "X-EBAY-API-COMPATIBILITY-LEVEL": "747",
+            "X-EBAY-API-DEV-NAME": Session.Developer,
+            "X-EBAY-API-IAF-TOKEN": Session.Token,
+            "X-EBAY-API-APP-NAME": Session.Application,
+            "X-EBAY-API-CERT-NAME": Session.Certificate,
+            "User-Agent": 'eBaySDK/2.1.5 Python/3.5.2 Linux/4.4.0-104-generic',
+            "X-EBAY-API-CALL-NAME": CallName,
+            "X-EBAY-API-SITEID": self.SiteID,
 
         }
         logger.info('headers====GenerateHeaders_upload_picture====%s', headers)
@@ -1085,7 +1085,7 @@ class GetOrders:
             count = 1
             while (getErrordetails.lower().find(
                     'input transfer has been terminated') != -1 or getErrordetails.lower().find(
-                    'internal error') != -1 or getErrordetails.lower().find('connection reset by peer') != -1):
+                'internal error') != -1 or getErrordetails.lower().find('connection reset by peer') != -1):
                 count = count + 1
                 time.sleep(25)
                 responseDOM = api.MakeCall("GetOrders")
@@ -1227,7 +1227,7 @@ class CompleteSale:
             <ShippingCarrierUsed>%s</ShippingCarrierUsed>
             </ShipmentTrackingDetails>
             </Shipment>""" % (
-            order_data['ShipmentTrackingNumber'], order_data['ShippingCarrierUsed']) if order_data.get(
+                order_data['ShipmentTrackingNumber'], order_data['ShippingCarrierUsed']) if order_data.get(
                 'ShippingCarrierUsed') else "<Shipped>true</Shipped>"
 
         else:
@@ -1578,7 +1578,7 @@ class ReviseItem:
                 return_options += """<ShippingCostPaidByOption>%s</ShippingCostPaidByOption>""" % (item['cost_paid_by'])
 
             return_policy = """<ReturnPolicy><ReturnsAcceptedOption>%s</ReturnsAcceptedOption>%s</ReturnPolicy>""" % (
-            item['return_accepted'], return_options)
+                item['return_accepted'], return_options)
 
             # logger.info('shipping_str========%s', shipping_str)
             # logger.info('return_policy========%s', return_policy)
@@ -1589,12 +1589,12 @@ class ReviseItem:
             buy_it_now = ''
             if item.get('buy_it_now_price'):
                 buy_it_now = """<BuyItNowPrice currencyID=\"""" + item['currency'] + """\">%s</BuyItNowPrice>""" % (
-                item['buy_it_now_price'])
+                    item['buy_it_now_price'])
 
             pickupinstore = ''
             if item.get('pickup_store', False):
                 pickupinstore = """<PickupInStoreDetails><EligibleForPickupInStore>%s</EligibleForPickupInStore></PickupInStoreDetails>""" % (
-                item['pickup_store'])
+                    item['pickup_store'])
 
             if item.get('listing_time') != False:
                 s_time = "<ScheduleTime>%s</ScheduleTime>" % (item['listing_time'])
@@ -1630,12 +1630,12 @@ class ReviseItem:
                     if store_category_count == 1:
                         storecategory += """<StoreCategoryID>%s</StoreCategoryID>
                         <StoreCategoryName>%s</StoreCategoryName>""" % (
-                        store_category['category_id'], store_category['name'])
+                            store_category['category_id'], store_category['name'])
 
                     if store_category_count == 2:
                         storecategory += """<StoreCategory2ID>%s</StoreCategory2ID>
                         <StoreCategory2Name>%s</StoreCategory2Name>""" % (
-                        store_category['category_id'], store_category['name'])
+                            store_category['category_id'], store_category['name'])
 
                     store_category_count += 1
                 storecategory += """</Storefront>"""
@@ -1882,7 +1882,6 @@ class EndItem:
         #                                       'item_id':item_id.encode("utf-8"),
         #                                       }
 
-
         api.RequestData = """<?xml version="1.0" encoding="utf-8"?>
                     <EndItemRequest xmlns="urn:ebay:apis:eBLBaseComponents">
                     <EndingReason>NotAvailable</EndingReason>
@@ -1894,8 +1893,6 @@ class EndItem:
         api.RequestData = api.RequestData.encode('utf-8')
         responseDOM = api.MakeCall("EndItem")
         # logger.info('api.RequestData ======%s',responseDOM.toprettyxml())
-
-
 
         """ for getting the values of endtime """
         Dictionary = {}
@@ -2144,20 +2141,20 @@ class AddFixedPriceItem:
 
         if itemlist[0].get('cost_paid_by'):
             return_options += """<ShippingCostPaidByOption>%s</ShippingCostPaidByOption>""" % (
-            itemlist[0]['cost_paid_by'])
+                itemlist[0]['cost_paid_by'])
 
         buy_it_now = ''
         if itemlist[0].get('buy_it_now_price'):
             buy_it_now = """<BuyItNowPrice currencyID=\"""" + itemlist[0]['currency'] + """\">%s</BuyItNowPrice>""" % (
-            itemlist[0]['buy_it_now_price'])
+                itemlist[0]['buy_it_now_price'])
 
         return_policy = """<ReturnPolicy><ReturnsAcceptedOption>%s</ReturnsAcceptedOption>%s</ReturnPolicy>""" % (
-        itemlist[0]['return_accepted'], return_options)
+            itemlist[0]['return_accepted'], return_options)
 
         pickupinstore = ''
         if itemlist[0].get('pickup_store', False):
             pickupinstore = """<PickupInStoreDetails><EligibleForPickupInStore>%s</EligibleForPickupInStore></PickupInStoreDetails>""" % (
-            itemlist[0]['pickup_store'])
+                itemlist[0]['pickup_store'])
 
         name_val_str = ''
 
@@ -2194,12 +2191,12 @@ class AddFixedPriceItem:
                 if store_category_count == 1:
                     storecategory += """<StoreCategoryID>%s</StoreCategoryID>
                     <StoreCategoryName>%s</StoreCategoryName>""" % (
-                    store_category['category_id'], store_category['name'])
+                        store_category['category_id'], store_category['name'])
 
                 if store_category_count == 2:
                     storecategory += """<StoreCategory2ID>%s</StoreCategory2ID>
                     <StoreCategory2Name>%s</StoreCategory2Name>""" % (
-                    store_category['category_id'], store_category['name'])
+                        store_category['category_id'], store_category['name'])
 
                 store_category_count += 1
             storecategory += """</Storefront>"""
@@ -2221,12 +2218,14 @@ class AddFixedPriceItem:
                 <PaymentMethods>%s</PaymentMethods>
                 <PayPalEmailAddress>%s</PayPalEmailAddress>
                 </Item>""" % (
-        storecategory, "<![CDATA[" + itemlist[0]['variation_title'] + "]]>", images_url, variation_set, variation_des,
-        str(subtitle), itemlist[0]['category_code'], Itemspecifics, str(itemlist[0]['best_offer']),
-        itemlist[0]['site_code'], buy_it_now, itemlist[0]['condition'], itemlist[0]['duration'],
-        itemlist[0]['location'], pickupinstore, itemlist[0]['list_type'], shipping_str, return_policy,
-        itemlist[0]['country_code'], str(s_time), itemlist[0]['private_listing'], itemlist[0]['hand_time'],
-        itemlist[0]['currency'], itemlist[0]['postal_code'], itemlist[0]['payment_method'], itemlist[0]['paypal_email'])
+            storecategory, "<![CDATA[" + itemlist[0]['variation_title'] + "]]>", images_url, variation_set,
+            variation_des,
+            str(subtitle), itemlist[0]['category_code'], Itemspecifics, str(itemlist[0]['best_offer']),
+            itemlist[0]['site_code'], buy_it_now, itemlist[0]['condition'], itemlist[0]['duration'],
+            itemlist[0]['location'], pickupinstore, itemlist[0]['list_type'], shipping_str, return_policy,
+            itemlist[0]['country_code'], str(s_time), itemlist[0]['private_listing'], itemlist[0]['hand_time'],
+            itemlist[0]['currency'], itemlist[0]['postal_code'], itemlist[0]['payment_method'],
+            itemlist[0]['paypal_email'])
         # api.RequestData="""<?xml version="1.0" encoding="utf-8" ?>
         #     <AddFixedPriceItemRequest xmlns="urn:ebay:apis:eBLBaseComponents">
         #     <RequesterCredentials>
@@ -2402,20 +2401,20 @@ class ReviseFixedPriceItem:
 
         if itemlist[0].get('cost_paid_by'):
             return_options += """<ShippingCostPaidByOption>%s</ShippingCostPaidByOption>""" % (
-            itemlist[0]['cost_paid_by'])
+                itemlist[0]['cost_paid_by'])
 
         buy_it_now = ''
         if itemlist[0].get('buy_it_now_price'):
             buy_it_now = """<BuyItNowPrice currencyID=\"""" + itemlist[0]['currency'] + """\">%s</BuyItNowPrice>""" % (
-            itemlist[0]['buy_it_now_price'])
+                itemlist[0]['buy_it_now_price'])
 
         return_policy = """<ReturnPolicy><ReturnsAcceptedOption>%s</ReturnsAcceptedOption>%s</ReturnPolicy>""" % (
-        itemlist[0]['return_accepted'], return_options)
+            itemlist[0]['return_accepted'], return_options)
 
         pickupinstore = ''
         if itemlist[0].get('pickup_store', False):
             pickupinstore = """<PickupInStoreDetails><EligibleForPickupInStore>%s</EligibleForPickupInStore></PickupInStoreDetails>""" % (
-            itemlist[0]['pickup_store'])
+                itemlist[0]['pickup_store'])
 
         name_val_str = ''
 
@@ -2447,12 +2446,12 @@ class ReviseFixedPriceItem:
                 if store_category_count == 1:
                     storecategory += """<StoreCategoryID>%s</StoreCategoryID>
                     <StoreCategoryName>%s</StoreCategoryName>""" % (
-                    store_category['category_id'], store_category['name'])
+                        store_category['category_id'], store_category['name'])
 
                 if store_category_count == 2:
                     storecategory += """<StoreCategory2ID>%s</StoreCategory2ID>
                     <StoreCategory2Name>%s</StoreCategory2Name>""" % (
-                    store_category['category_id'], store_category['name'])
+                        store_category['category_id'], store_category['name'])
 
                 store_category_count += 1
             storecategory += """</Storefront>"""
@@ -2476,13 +2475,15 @@ class ReviseFixedPriceItem:
                 <PaymentMethods>%s</PaymentMethods>
                 <PayPalEmailAddress>%s</PayPalEmailAddress>
                 </Item>""" % (
-        storecategory, "<![CDATA[" + itemlist[0]['variation_title'] + "]]>", images_url, itemlist[0]['ebay_item_id'],
-        variation_set, "<![CDATA[" + itemlist[0]['description'].encode("utf-8") + "]]>", str(subtitle),
-        itemlist[0]['category_code'], Itemspecifics, str(itemlist[0]['best_offer']), itemlist[0]['site_code'],
-        buy_it_now, itemlist[0]['condition'], itemlist[0]['duration'], itemlist[0]['location'], pickupinstore,
-        itemlist[0]['list_type'], shipping_str, return_policy, itemlist[0]['country_code'], str(s_time),
-        itemlist[0]['private_listing'], itemlist[0]['hand_time'], itemlist[0]['currency'], itemlist[0]['postal_code'],
-        itemlist[0]['payment_method'], itemlist[0]['paypal_email'])
+            storecategory, "<![CDATA[" + itemlist[0]['variation_title'] + "]]>", images_url,
+            itemlist[0]['ebay_item_id'],
+            variation_set, "<![CDATA[" + itemlist[0]['description'].encode("utf-8") + "]]>", str(subtitle),
+            itemlist[0]['category_code'], Itemspecifics, str(itemlist[0]['best_offer']), itemlist[0]['site_code'],
+            buy_it_now, itemlist[0]['condition'], itemlist[0]['duration'], itemlist[0]['location'], pickupinstore,
+            itemlist[0]['list_type'], shipping_str, return_policy, itemlist[0]['country_code'], str(s_time),
+            itemlist[0]['private_listing'], itemlist[0]['hand_time'], itemlist[0]['currency'],
+            itemlist[0]['postal_code'],
+            itemlist[0]['payment_method'], itemlist[0]['paypal_email'])
         # api.RequestData="""<?xml version="1.0" encoding="utf-8" ?>
         #     <ReviseFixedPriceItemRequest xmlns="urn:ebay:apis:eBLBaseComponents">
         #     <RequesterCredentials>
@@ -2491,7 +2492,7 @@ class ReviseFixedPriceItem:
 
         api.RequestData = """<?xml version="1.0" encoding="utf-8" ?>
                     <ReviseFixedPriceItemRequest xmlns="urn:ebay:apis:eBLBaseComponents">%s</ReviseFixedPriceItemRequest>""" % (
-        container)
+            container)
 
         api.RequestData = api.RequestData.replace('&', '&amp;').encode('utf-8')
         logger.info('api.RequestData===============%s', api.RequestData.encode('utf-8'))
@@ -2688,7 +2689,8 @@ class ebayerp_osv(models.Model):
             return result
 
         elif method == 'UploadSiteHostedPictures':
-            upload = UploadSiteHostedPictures(referential.dev_id, referential.app_id, referential.cert_id, referential.auth_token, referential.server_url)
+            upload = UploadSiteHostedPictures(referential.dev_id, referential.app_id, referential.cert_id,
+                                              referential.auth_token, referential.server_url)
             # upload = UploadSiteHostedPictures(referential.dev_id, referential.app_id, referential.cert_id,
             #                                   referential.auth_n_auth_token, referential.server_url)
             result = upload.Get(arguments[0], arguments[1])
@@ -2803,8 +2805,8 @@ class UploadSiteHostedPictures:
         uploading_image = open(filename, 'rb')
         multiPartImageData = uploading_image.read()
         print("-----multiPartImageData", multiPartImageData)
-        multiPartImageData=base64.b64encode(multiPartImageData)
-        multiPartImageData=multiPartImageData.decode()
+        multiPartImageData = base64.b64encode(multiPartImageData)
+        multiPartImageData = multiPartImageData.decode()
         uploading_image.close()
         # string1 = "--MIME_boundary"
         # string2 = "Content-Disposition: form-data; name=\"XML Payload\""
@@ -2831,8 +2833,9 @@ class UploadSiteHostedPictures:
         # responseDOM = api.MakeCall("UploadSiteHostedPictures")
         #
 
-        string='<?xml version=\'1.0\' encoding=\'utf-8\'?><UploadSiteHostedPicturesRequest xmlns="urn:ebay:apis:eBLBaseComponents"><PictureName>'
-        api.Data={'XMLPayload': string+filename.split('/')[-2]+'</PictureName><WarningLevel>High</WarningLevel></UploadSiteHostedPicturesRequest>'}
+        string = '<?xml version=\'1.0\' encoding=\'utf-8\'?><UploadSiteHostedPicturesRequest xmlns="urn:ebay:apis:eBLBaseComponents"><PictureName>'
+        api.Data = {'XMLPayload': string + filename.split('/')[
+            -2] + '</PictureName><WarningLevel>High</WarningLevel></UploadSiteHostedPicturesRequest>'}
         api.File = {'file': ('EbayImage', open(filename, 'rb'))}
         responseDOM = api.MakeCall("UploadSiteHostedPictures")
         Dictionary = {}
@@ -2846,7 +2849,6 @@ class UploadSiteHostedPictures:
             #               token=self.Session.Token,
             #               certid=self.Session.Certificate,
             #               devid=self.Session.Developer, warnings=True)
-
 
             # pass in an open file
             # the Requests module will close the file
@@ -2864,8 +2866,6 @@ class UploadSiteHostedPictures:
             # # json.dumps(api)
             # responseDOM=response.dict()
             #
-
-
 
             if responseDOM.getElementsByTagName('Ack')[0].childNodes[0].data == 'Success':
                 ack = responseDOM.getElementsByTagName('Ack')[0].childNodes[0].data
@@ -2902,18 +2902,19 @@ class getshipping:
         shipping_type = shipping_information[1]['shipping_type']
         if shipping_information[1]['shipping_type'] == 'Flat':
             package_handling = """<InternationalPackagingHandlingCosts>%s</InternationalPackagingHandlingCosts>""" % (
-            shipping_information[1]['handling_cost'])
+                shipping_information[1]['handling_cost'])
             calculated_shipping = ''
         else:
             package_handling = """<PackagingHandlingCosts currencyID="%s">%s</PackagingHandlingCosts>""" % (
-            shipping_information[1]['currency'], shipping_information[1]['handling_cost'])
+                shipping_information[1]['currency'], shipping_information[1]['handling_cost'])
             calculated_shipping = """<CalculatedShippingRate>%s<ShippingIrregular>%s</ShippingIrregular>
                         <ShippingPackage>%s</ShippingPackage>
                         <WeightMajor unit="lbs">%s</WeightMajor>
                         <WeightMinor unit="oz">%s</WeightMinor>
                         </CalculatedShippingRate>""" % (
-            package_handling, shipping_information[1]['shipping_irregular'], shipping_information[1]['intr_pack_type'],
-            shipping_information[1]['intr_max_weight'], shipping_information[1]['intr_min_weight'])
+                package_handling, shipping_information[1]['shipping_irregular'],
+                shipping_information[1]['intr_pack_type'],
+                shipping_information[1]['intr_max_weight'], shipping_information[1]['intr_min_weight'])
 
         if shipping_information[1]['shipping_type'] == 'Flat':
 
@@ -2925,7 +2926,7 @@ class getshipping:
                 if shipping_option['service_pattern'] == 'domestic':
                     if cnt == 1:
                         free_shipping = """<FreeShipping>%s</FreeShipping>""" % (
-                        shipping_information[1]['free_shipping'])
+                            shipping_information[1]['free_shipping'])
                     else:
                         free_shipping = ''
                     shipping_option_domestic += """<ShippingServiceOptions>%s<ShippingService>%s</ShippingService>
@@ -2933,8 +2934,8 @@ class getshipping:
                     <ShippingServiceCost>%s</ShippingServiceCost>
                     <ShippingServicePriority>%s</ShippingServicePriority>
                     </ShippingServiceOptions>""" % (
-                    free_shipping, shipping_option['option_service'], shipping_option['add_cost'],
-                    shipping_option['cost'], shipping_option['priority'])
+                        free_shipping, shipping_option['option_service'], shipping_option['add_cost'],
+                        shipping_option['cost'], shipping_option['priority'])
                     shipping_type = 'Flat'
                 else:
                     final_locations = ''
@@ -2951,7 +2952,7 @@ class getshipping:
                     shipping_option_international += """<InternationalShippingServiceOption>
                     <ShippingService>%s</ShippingService>
                     <ShippingServicePriority>%s</ShippingServicePriority>%s</InternationalShippingServiceOption>""" % (
-                    shipping_option['option_service'], shipping_option['priority'], final_locations)
+                        shipping_option['option_service'], shipping_option['priority'], final_locations)
 
         else:
             shipping_type = 'Calculated'
@@ -2963,13 +2964,13 @@ class getshipping:
                     cnt = cnt + 1
                     if cnt == 1:
                         free_shipping = """<FreeShipping>%s</FreeShipping>""" % (
-                        shipping_information[1]['free_shipping'])
+                            shipping_information[1]['free_shipping'])
                     else:
                         free_shipping = ''
                     shipping_option_domestic += """<ShippingServiceOptions>%s<ShippingService>%s</ShippingService>
                     <ShippingServicePriority>%s</ShippingServicePriority>
                     </ShippingServiceOptions>""" % (
-                    free_shipping, shipping_option['option_service'], shipping_option['priority'])
+                        free_shipping, shipping_option['option_service'], shipping_option['priority'])
                 else:
                     final_locations = ''
                     if shipping_option['ship_to'].find(',') != -1:
@@ -2984,9 +2985,9 @@ class getshipping:
                     shipping_option_international += """<InternationalShippingServiceOption>
                     <ShippingService>%s</ShippingService>
                     <ShippingServicePriority>%s</ShippingServicePriority>%s</InternationalShippingServiceOption>""" % (
-                    shipping_option['option_service'], shipping_option['priority'], final_locations)
+                        shipping_option['option_service'], shipping_option['priority'], final_locations)
         ship_str = """<ShippingDetails><ShippingType>%s</ShippingType><PaymentInstructions></PaymentInstructions>%s%s%s</ShippingDetails>""" % (
-        shipping_type, shipping_option_domestic, calculated_shipping, shipping_option_international)
+            shipping_type, shipping_option_domestic, calculated_shipping, shipping_option_international)
 
         return ship_str
 
@@ -3069,14 +3070,14 @@ class AddEbayItems:
             buy_it_now = ''
             if item.get('buy_it_now_price'):
                 buy_it_now = """<BuyItNowPrice currencyID=\"""" + item['currency'] + """\">%s</BuyItNowPrice>""" % (
-                item['buy_it_now_price'])
+                    item['buy_it_now_price'])
 
             return_policy = """<ReturnPolicy><ReturnsAcceptedOption>%s</ReturnsAcceptedOption>%s</ReturnPolicy>""" % (
-            item['return_accepted'], return_options)
+                item['return_accepted'], return_options)
             pickupinstore = ''
             if item.get('pickup_store', False):
                 pickupinstore = """<PickupInStoreDetails><EligibleForPickupInStore>%s</EligibleForPickupInStore></PickupInStoreDetails>""" % (
-                item['pickup_store'])
+                    item['pickup_store'])
 
             if item.get('listing_time') != False:
                 s_time = "<ScheduleTime>%s</ScheduleTime>" % (item['listing_time'])
@@ -3115,12 +3116,12 @@ class AddEbayItems:
                     if store_category_count == 1:
                         storecategory += """<StoreCategoryID>%s</StoreCategoryID>
                         <StoreCategoryName>%s</StoreCategoryName>""" % (
-                        store_category['category_id'], store_category['name'])
+                            store_category['category_id'], store_category['name'])
 
                     if store_category_count == 2:
                         storecategory += """<StoreCategory2ID>%s</StoreCategory2ID>
                         <StoreCategory2Name>%s</StoreCategory2Name>""" % (
-                        store_category['category_id'], store_category['name'])
+                            store_category['category_id'], store_category['name'])
 
                     store_category_count += 1
                 storecategory += """</Storefront>"""
@@ -3154,12 +3155,13 @@ class AddEbayItems:
                     <ProductListingDetails>%s</ProductListingDetails>
                     </Item>
                     </AddItemRequestContainer>""" % (
-            storecategory, "<![CDATA[" + item['listing_title'] + "]]>", "<![CDATA[" + str(item['description']) + "]]>",
-            subtitle, item['category_code'], Itemspecifics, str(item['best_offer']), item['site_code'], sku_str,
-            item['qnt'], item['price'], buy_it_now, item['condition'], item['duration'], item['location'],
-            pickupinstore, item['list_type'], shipping_str, return_policy, item['country_code'],
-            item['private_listing'], item['hand_time'], item['currency'], s_time, item['postal_code'],
-            item['payment_method'], item['paypal_email'], ebay_images, ProductListing)
+                storecategory, "<![CDATA[" + item['listing_title'] + "]]>",
+                "<![CDATA[" + str(item['description']) + "]]>",
+                subtitle, item['category_code'], Itemspecifics, str(item['best_offer']), item['site_code'], sku_str,
+                item['qnt'], item['price'], buy_it_now, item['condition'], item['duration'], item['location'],
+                pickupinstore, item['list_type'], shipping_str, return_policy, item['country_code'],
+                item['private_listing'], item['hand_time'], item['currency'], s_time, item['postal_code'],
+                item['payment_method'], item['paypal_email'], ebay_images, ProductListing)
 
         # api.RequestData="""<?xml version="1.0" encoding="utf-8" ?>
         #     <AddItemsRequest xmlns="urn:ebay:apis:eBLBaseComponents">
@@ -3174,7 +3176,7 @@ class AddEbayItems:
                     <WarningLevel>High</WarningLevel>%s</AddItemsRequest>""" % (container)
 
         logger.info('api.RequestData=======%s', api.RequestData.encode('utf-8'))
-        api.RequestData= api.RequestData.encode('utf-8')
+        api.RequestData = api.RequestData.encode('utf-8')
         responseDOM = api.MakeCall("AddItems")
 
         logger.info('api.RequestData=======%s', responseDOM.toprettyxml())
@@ -3655,7 +3657,6 @@ class GetCategorySpecifics:
         #                                                 'category_id':category_id
         #                                     }
 
-
         api.RequestData = """<?xml version="1.0" encoding="utf-8"?>
                 <GetCategorySpecificsRequest xmlns="urn:ebay:apis:eBLBaseComponents">
                 <CategoryID>%(category_id)s</CategoryID>
@@ -3672,4 +3673,3 @@ class GetCategorySpecifics:
         """ force garbage collection of the DOM object """
         responseDOM.unlink()
         return getcategory_array
-

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding='UTF-8'?>
 <odoo>
     <data>
-
-
-
      <record model="ir.cron" id="update_ebay_listing_cron">
         <field name="name">Update Ebay Listing</field>
         <field name="interval_number">1</field>
@@ -15,7 +12,7 @@
         <!--<field name="function" eval="'update_listing_cron'"/>-->
         <field name="state">code</field>
         <field name="code">model.update_listing_cron()</field>
-        <field name="args" eval="'()'" />
+<!--        <field name="args" eval="'()'" />-->
 
     </record>
 
@@ -30,7 +27,7 @@
         <!--<field name="function" eval="'run_schedular_renew_token'"/>-->
         <field name="state">code</field>
         <field name="code">model.run_schedular_renew_token()</field>
-        <field name="args" eval="'()'" />
+<!--        <field name="args" eval="'()'" />-->
         </record>
 
     <record model="ir.cron" id="corrective_action_email_cron">
@@ -44,7 +41,7 @@
         <!--<field name="function" eval="'run_get_user_returns_scheduler'"/>-->
         <field name="state">code</field>
         <field name="code">model.run_get_user_returns_scheduler()</field>
-        <field name="args" eval="'()'" />
+<!--        <field name="args" eval="'()'" />-->
     </record>
     </data>
 </odoo>

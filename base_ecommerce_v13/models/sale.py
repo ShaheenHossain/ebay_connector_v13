@@ -50,7 +50,7 @@ class sale_shop(models.Model):
     #    sent_thankyou_email = fields.Boolean(string="Sent Thankyou Email")
     use_debug = fields.Boolean(string="Set Debug log")
     exclude_product = fields.Boolean(string="Import Order Only")
-    template_id = fields.Many2one('email.template', string="Email Template")
+    template_id = fields.Many2one('mail.template', string="Email Template")
     marketplace_image = fields.Binary()
 
     def debug_log(self):
@@ -1107,7 +1107,8 @@ class sale_order(models.Model):
     product_details = fields.Many2one('product.product', related='order_line.product_id', string='Product')
     products_sku = fields.Char(related='product_id.default_code')
     products_name = fields.Char(related='product_id.name', string='Product')
-    products_image = fields.Binary(related='product_id.image')
+    #/ products_image = fields.Binary(related='product_id.image')
+    products_image = fields.Binary("Image")
     marketplace_image = fields.Binary(related='shop_id.marketplace_image')
 
     def _get_sale_order_name(self, shop_id):

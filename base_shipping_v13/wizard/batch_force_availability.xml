@@ -26,7 +26,6 @@
 <!--            view_mode="form"-->
 <!--            binding_views="form"-->
 <!--            target="new"-->
-<!--            key2="client_action_multi"-->
 <!--            context="{'force_availability': 1}"/>        -->
 
         <act_window id="action_force_availability"

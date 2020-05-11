@@ -1,6 +1,5 @@
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
-import time
+from odoo import models, fields
+
 
 # class refund_order(models.Model):
 #     _name = "refund.order"
@@ -29,6 +28,7 @@ import time
 #                     'state':'done'})
 #         return True
 
+
 class return_order_line(models.Model):
     _name = "return.order.line"
 
@@ -39,8 +39,8 @@ class return_order_line(models.Model):
                 if listing_data:
                     rec.product_id = listing_data.product_id.id
 
-    order_id = fields.Many2one('sale.order','Sale Order')
+    order_id = fields.Many2one('sale.order', 'Sale Order')
     item_id = fields.Char('Item Id')
-    product_id = fields.Many2one('product.product','Product',compute='_compute_product_id')
+    product_id = fields.Many2one('product.product', 'Product', compute='_compute_product_id')
     transaction_id = fields.Char('Transaction Id')
     return_qty = fields.Integer('Return Qty')

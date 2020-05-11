@@ -5,7 +5,6 @@
         <record id="view_update_carrier_picking_base" model="ir.ui.view">
             <field name="name">Update base Picking</field>
             <field name="model">update.base.picking</field>
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <form>
 
@@ -46,10 +45,9 @@
 
 <!--        <act_window name="Shipping Operations"-->
 <!--            res_model="update.base.picking"-->
-<!--            src_model="stock.picking"-->
+<!--            binding_model="stock.picking"-->
 <!--            view_mode="form"-->
 <!--            target="new"-->
-<!--            key2="client_action_multi"-->
 <!--            id="action_view_update_base_picking"/>        -->
 
         <act_window name="Shipping Operations"

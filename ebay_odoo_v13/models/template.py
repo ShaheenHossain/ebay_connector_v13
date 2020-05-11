@@ -1,4 +1,4 @@
-from odoo import models, fields, api, _
+from odoo import models, fields, api
 
 
 class loc_master(models.Model):
@@ -9,17 +9,11 @@ class loc_master(models.Model):
     region = fields.Char(string='Region', size=64)
 
 
-loc_master()
-
-
 class ship_loc_master(models.Model):
     _name = "ship.loc.master"
 
     name = fields.Char(string='Shipping Location', size=64)
     ship_code = fields.Char(string='Location Code', size=64)
-
-
-ship_loc_master()
 
 
 class shipping_master(models.Model):
@@ -38,18 +32,12 @@ class shipping_master(models.Model):
     dimension_chk = fields.Boolean(string='Dimensions Required', readonly=True)
 
 
-shipping_master()
-
-
 class shipping_loc_master(models.Model):
     _name = "shipping.loc.master"
 
     name = fields.Char(string='Shipping Location', size=64)
     ship_code = fields.Char(string='Shipp Code', size=10)
     all_loc = fields.Many2one('tmp.shipping.master', string='All Locations')
-
-
-shipping_loc_master()
 
 
 class tmp_shipping_master(models.Model):
@@ -70,20 +58,17 @@ class tmp_shipping_master(models.Model):
     shipping_data_falt = fields.Many2one('ebayerp.template', string='Shipping Data')
 
 
-tmp_shipping_master()
-
-
 class ebayerp_template(models.Model):
     _name = "ebayerp.template"
 
     @api.onchange('only_feed_scr')
     def onchange_buyer_req(self):
-        if self.only_feed_scr == True:
+        if self.only_feed_scr:
             self.hv_bid = True
 
     @api.onchange('hv_bid')
     def onchange_buyer_req2(self):
-        if self.hv_bid == False:
+        if not self.hv_bid:
             self.only_feed_scr = False
 
     template_type = fields.Selection([('selling', 'Selling'), ('description', 'Description'), ('common', 'Common')],
@@ -241,6 +226,3 @@ class ebayerp_template(models.Model):
     free_shipping = fields.Boolean(string='Free Shipping')
     add_to_decs = fields.Text(string='Add To Description', readonly=True,
                               default='%image-x% where "x" is sequence of image')
-
-
-ebayerp_template()

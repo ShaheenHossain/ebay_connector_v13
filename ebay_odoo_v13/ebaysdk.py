@@ -1,13 +1,8 @@
-import os
-import sys
-import datetime
-from optparse import OptionParser
-import ebaysdk
-from ebaysdk.utils import getNodeText
-from odoo import models, fields, api, _
+from json import dump
 from ebaysdk.exception import ConnectionError
 from ebaysdk.trading import Connection as Trading
-import requests
+
+from odoo import models
 
 
 class ebay_sdk(models.Model):

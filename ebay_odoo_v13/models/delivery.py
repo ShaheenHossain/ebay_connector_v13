@@ -1,7 +1,4 @@
-import time
-import odoo.addons.decimal_precision as dp
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError, ValidationError
+from odoo import models, fields
 
 
 class delivery_carrier(models.Model):
@@ -12,13 +9,7 @@ class delivery_carrier(models.Model):
                                  default='standard')
 
 
-delivery_carrier()
-
-
 class res_partner(models.Model):
     _inherit = "res.partner"
 
     ebay_user_id = fields.Char(string='Ebay Customer ID', size=256)
-
-
-res_partner()

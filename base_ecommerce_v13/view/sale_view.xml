@@ -153,7 +153,6 @@
         <record id="view_shop_tree" model="ir.ui.view">
             <field name="name">sale.shop</field>
             <field name="model">sale.shop</field>
-            <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Sales Shop">
                     <field name="name"/>
@@ -205,7 +204,7 @@
             <field name="inherit_id" ref="delivery.view_order_form_with_carrier"/>
             <field name="arch" type="xml">
                 <data>  
-                    <xpath expr="//field[@name='carrier_id']" position="replace">
+                    <xpath expr="//field[@name='delivery_set']" position="before">
                         <field name="carrier_id" context="{'order_id': id}" class="oe_inline" options="{'no_create': True, 'no_open': True}" attrs="{'readonly':[('state','in',('done'))]}"/>
                     </xpath>
                 </data>
@@ -228,7 +227,7 @@
                     <field name="marketplace_image" widget="image" string="Shop"/>
                 </xpath>
                 <!--<xpath expr="//field[@name='date_order']" position="after">-->
-                <xpath expr="//field[@name='confirmation_date']" position="after">
+                <xpath expr="//field[@name='partner_id']" position="before">
                     <field name="channel_carrier" string="Delivery Method"/>
                     <field name="carrier_tracking_ref" string="Courier Tracking Reference"/>
                 </xpath>
@@ -259,7 +258,7 @@
                     <field name="products_image" widget='image' string="Image"/>
                     <field name="marketplace_image" widget="image" string="Shop"/>
                 </xpath>
-                <xpath expr="//field[@name='date_order']" position="after">
+                <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="channel_carrier" string="Delivery Method"/>
                     <field name="carrier_tracking_ref" string="Courier Tracking Reference"/>
                 </xpath>

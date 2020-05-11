@@ -2,14 +2,13 @@ from ebaysdk.exception import ConnectionError
 import json
 import logging
 import urllib.request
-
+from xml.dom.minidom import parseString
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 from ebaysdk.exception import ConnectionError
 from ebaysdk.trading import Connection as Trading
 
 logger = logging.getLogger('attribute')
-from xml.dom.minidom import parseString
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
 
 
 class product_attribute_info(models.Model):
@@ -19,9 +18,6 @@ class product_attribute_info(models.Model):
     ebay_product_id2 = fields.Many2one('product.product', string='Product')
     shop_id3 = fields.Many2one('list.item', string='Shop id3')
     shop_id4 = fields.Many2one('list.item', string='Shop id4')
-
-
-product_attribute_info()
 
 
 class product_attribute_set(models.Model):
@@ -67,18 +63,16 @@ class product_attribute_set(models.Model):
             response = api.execute('UploadSiteHostedPictures', pictureData, files=files)
             print(response.dict())
             json.dumps(api)
-
-
         except ConnectionError as e:
             print(e)
             print(e.response.dict())
 
     def get_attribute(self):
-        '''
+        """
         This function is used to Get the attributes from Ebay
         parameters:
             No Parameter
-        '''
+        """
         shop_obj = self.env['sale.shop']
         connection_obj = self.env['ebayerp.osv']
         results = False
@@ -150,11 +144,11 @@ class product_attribute_set(models.Model):
         return True
 
     def get_category_specifics(self):
-        '''
+        """
         This function is used to Get Category specifics from Ebay
         parameters:
             No Parameter
-        '''
+        """
         results = False
         attribute = False
         shop_obj = self.env['sale.shop']
@@ -228,13 +222,7 @@ class product_attribute_set(models.Model):
         return True
 
 
-product_attribute_set()
-
-
 class product_attribute(models.Model):
     _inherit = "product.attribute"
 
     variation_enabled = fields.Boolean(string='variation Enabled', help="If checked then this attribute is variation")
-
-
-product_attribute()

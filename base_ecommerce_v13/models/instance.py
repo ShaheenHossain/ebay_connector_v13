@@ -26,7 +26,7 @@ class sales_channel_instance(models.Model):
     name = fields.Char(string='Name', size=64, required=True)
     module_id = fields.Selection(_get_installed_module, string='Module', size=100)
     # image = fields.Binary(compute='_get_default_image')
-    image = fields.Image(string="Image", max_width=64, max_height=64)
+    image = fields.Image(string="Image", max_width=64, max_height=64, compute='_get_default_image')
 
     @api.model
     def get_module_id(self, module_id):
@@ -38,7 +38,7 @@ class sales_channel_instance(models.Model):
         # if partner_type in ['other'] and parent_id:
         #     parent_image = self.browse(parent_id).image
         #     image = parent_image and parent_image.decode('base64') or None
-        image, image_path, colorize = False, False, False
+        image_path, colorize = False, False, False
 
         if self.module_id == 'amazon_odoo_v11':
             image_path = get_module_resource('base_ecommerce_v13', 'static/images', 'amazon_logo.png')

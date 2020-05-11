@@ -62,7 +62,7 @@
             <field name="name">view.list.item.form</field>
             <field name="model">list.item</field>
             <field name="arch" type="xml">
-                <form string="New Listing" version="7.0">
+                <form string="New Listing">
                     <header>
                         <button name="add_ebay_product_conatainer" string="Add Product In eBay" type="object" class="oe_highlight"/>
                         <button name="update_ebay_product" string="Update Product In eBay" type="object" class="oe_highlight"/>

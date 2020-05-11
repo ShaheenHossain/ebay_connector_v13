@@ -16,6 +16,3 @@ class product_images(models.Model):
     _inherit = "product.images"
 
     is_ebay = fields.Boolean(string='Ebay Image')
-
-
-product_images()

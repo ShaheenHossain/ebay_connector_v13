@@ -69,7 +69,6 @@
         <record id="view_ebay_product_listing_tree" model="ir.ui.view">
             <field name="name">ebay.product.listing.tree</field>
             <field name="model">ebay.product.listing</field>
-            <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Product Listing" create="false">
                     <field name="name" />
@@ -97,7 +96,6 @@
         <record id="view_ebay_product_form_ebay_inherit1" model="ir.ui.view">
                 <field name="name">eaby.product.form.ebay.inherit1</field>
                 <field name="model">product.product</field>
-                <field name="type">form</field>
                 <field name="inherit_id" ref="product.product_normal_form_view" />
                 <field name="arch" type="xml">
                     <div name="options" position="inside">
