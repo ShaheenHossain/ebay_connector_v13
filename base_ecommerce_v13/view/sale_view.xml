@@ -13,15 +13,15 @@
                         <group name='shop'>
                             <group colspan="2" col="4">
                                 <separator colspan="4" string="Shop Information"/>
-                                <field name="name" select="1"/>
-                                <field name="warehouse_id" required="1" select="1" widget="selection"/>
+                                <field name="name"/>
+                                <field name="warehouse_id" required="1" widget="selection"/>
                                 <field name="company_id" widget="selection" groups="base.group_multi_company"/>
                             </group>
                             <group colspan="2" col="4">
                                 <separator colspan="4" string="Accounting"/>
                                 <field name="payment_default_id"/>
-                                <field  name="pricelist_id" select="1" required="True" />
-                                <field name="project_id" select="1" groups="analytic.group_analytic_accounting"/>
+                                <field  name="pricelist_id" required="True" />
+                                <field name="project_id" groups="analytic.group_analytic_accounting"/>
                             </group>
                         </group>
                         

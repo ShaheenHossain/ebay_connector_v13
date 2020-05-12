@@ -6,17 +6,14 @@
             <field name="name">ebay.messages.form.view</field>
             <field name="model">ebay.messages</field>
             <field name="arch" type="xml">
-                <form string="Ebay Listing" version="7.0" >
+                <form string="Ebay Listing">
                     <header>
                         <button name="reply" string="Reply" type="object" />
-                        
                         <field name="state" widget="statusbar" statusbar_visible="unassigned,pending,solved" clickable="True" />
-                    
-                    
                     </header>
                     <sheet>
                         <h1>
-                            <label string="Subject : "/>
+                            <label string="Subject : " for="name"/>
                             <field name="name" class="oe_inline"/>
                         </h1>
                         <group>
@@ -49,7 +46,8 @@
                 <field name="name">ebay.messages.tree.view</field>
                 <field name="model">ebay.messages</field>
                 <field name="arch" type="xml">
-                    <tree string="messages" fonts="bold:message_unread==True" colors="grey:state=='unassigned';blue:state=='solved';red:state=='pending'">
+<!--                    <tree string="messages" fonts="bold:message_unread==True" colors="grey:state=='unassigned';blue:state=='solved';red:state=='pending'">-->
+                    <tree string="messages">
                         <field name="message_unread" invisible="1"/>
                         <field name="name"/>
                         <field name="message_id"/>
@@ -71,8 +69,8 @@
                         <field name="recipient_user_id" string="Recipient"/>
                         <filter string="New Mail" name="message_unread" domain="[('message_unread','=',True)]"/>
                         <group expand="0" string="Group By">
-                            <filter string="Sender" domain="[]" context="{'group_by':'sender'}"/>
-                            <filter string="Recipient" domain="[]" context="{'group_by':'recipient_user_id'}"/>
+                            <filter name = "sender" string="Sender" domain="[]" context="{'group_by':'sender'}"/>
+                            <filter name = "recipient" string="Recipient" domain="[]" context="{'group_by':'recipient_user_id'}"/>
                         </group>
                     </search>
                 </field>

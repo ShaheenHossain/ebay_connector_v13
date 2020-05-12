@@ -10,7 +10,7 @@
                         <page string="Product Listing">
                             <group colspan="4">
                                 <field name="template_type"/>
-                                <field name="name" select="1" colspan="2"/>
+                                <field name="name" colspan="2"/>
                                 <group colspan="8">
                                  <field name="currency" required="0" colspan="2" attrs="{'invisible':[('template_type','=','description')],'required': [('template_type', '!=', 'description')]}"/>
 

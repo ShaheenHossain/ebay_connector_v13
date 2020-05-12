@@ -180,7 +180,6 @@ class sale_shop(models.Model):
                 product_id = prod_obj.search([('magento_exported', '=', True)])
                 print("**************------product_id--------****************", product_id)
             for browse_obj in prod_obj.browse(product_id):
-
                 sku_list = {'price': browse_obj.magento_price or browse_obj.list_price}
                 print("***************########## sku_list ###########*****************", sku_list)
                 mage.client.service.catalogProductUpdate(mage.token, browse_obj.default_code, sku_list,
@@ -1107,8 +1106,8 @@ class sale_order(models.Model):
     product_details = fields.Many2one('product.product', related='order_line.product_id', string='Product')
     products_sku = fields.Char(related='product_id.default_code')
     products_name = fields.Char(related='product_id.name', string='Product')
-    #/ products_image = fields.Binary(related='product_id.image')
-    products_image = fields.Binary("Image")
+    products_image = fields.Image(related='product_id.image_1920')
+    # products_image = fields.Binary("Image")
     marketplace_image = fields.Binary(related='shop_id.marketplace_image')
 
     def _get_sale_order_name(self, shop_id):

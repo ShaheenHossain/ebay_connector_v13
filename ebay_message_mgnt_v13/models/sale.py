@@ -232,10 +232,10 @@ class mail_message(models.Model):
         partner_tree = dict((partner[0], partner) for partner in partners_names)
 
         # 2. Attachments as SUPERUSER, because could receive msg and attachments for doc uid cannot see
-        attachments_data = attachments.sudo().read(['id', 'datas_fname', 'name', 'mimetype'])
+        attachments_data = attachments.sudo().read(['id', 'name', 'mimetype'])
         attachments_tree = dict((attachment['id'], {
             'id': attachment['id'],
-            'filename': attachment['datas_fname'],
+            'filename': attachment['name'],
             'name': attachment['name'],
             'mimetype': attachment['mimetype'],
         }) for attachment in attachments_data)
