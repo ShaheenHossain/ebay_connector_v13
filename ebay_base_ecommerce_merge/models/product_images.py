@@ -144,6 +144,6 @@ class product_images(models.Model):
     url = fields.Char(string='File Location', size=250)
     comments = fields.Text(string='Comments')
     product_id = fields.Many2one('product.product', string='Product')
-
+    is_ebay = fields.Boolean(string='Ebay Image')
 #    _sql_constraints = [('uniq_name_product_id', 'UNIQUE(product_id, name)',
 #                _('A product can have only one image with the same product Name'))]

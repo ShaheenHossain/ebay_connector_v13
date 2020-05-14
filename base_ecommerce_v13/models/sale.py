@@ -6,7 +6,7 @@ import time
 from odoo import api, fields, models, _, osv
 from odoo.exceptions import UserError
 
-_logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class sale_shop(models.Model):
@@ -75,7 +75,7 @@ class sale_shop(models.Model):
 
         log_vals = {}
         shop_obj = self
-        _logger.info('shop_obj.instance_id.module_id==== %s', shop_obj.instance_id.module_id)
+        logger.info('shop_obj.instance_id.module_id==== %s', shop_obj.instance_id.module_id)
         if shop_obj.instance_id.module_id == 'amazon_odoo_v11':
             self.update_amazon_order_status()
 
@@ -552,7 +552,7 @@ class sale_shop(models.Model):
             if not resultval['product_id']:
                 print("IF not resultval['product_id']")
                 product = self.with_context(ctx).createProduct(shop_id, resultval)
-                _logger.info('product==== %s', product)
+                logger.info('product==== %s', product)
                 if isinstance(product, int):
                     product = product_obj.browse(product)
                 else:
@@ -560,13 +560,13 @@ class sale_shop(models.Model):
             else:
                 print("else")
                 product_id = resultval['product_id']
-                _logger.info('product_id==== %s', product_id)
+                logger.info('product_id==== %s', product_id)
                 if isinstance(product_id, int):
                     product = product_obj.browse(product_id)
                 else:
 
                     product = product_id
-                _logger.info('product==== %s', product)
+                logger.info('product==== %s', product)
                 print("product product product", product)
         else:
             product = self.with_context(ctx).createProduct(shop_id, resultval)
@@ -595,7 +595,7 @@ class sale_shop(models.Model):
         if float(resultval.get('ItemPriceTotal', False)) >= 1.0:
             price_unit = includetax / float(resultval['QuantityOrdered'])
 
-        _logger.info('tax_id==== %s', tax_id)
+        logger.info('tax_id==== %s', tax_id)
         # if tax_id and isinstance(tax_id[0][2], (int, long)):
         if tax_id and isinstance(tax_id[0][2], (int)):
             tax_id = [(tax_id[0][0], tax_id[0][1], [tax_id[0][2]])]
@@ -612,7 +612,7 @@ class sale_shop(models.Model):
             'unique_sales_line_rec_no': resultval.get('unique_sales_line_rec_no')
         }
         print("===orderlinevals==>>>>>>>>", orderlinevals)
-        _logger.info('**********orderlinevals**** %s', orderlinevals)
+        logger.info('**********orderlinevals**** %s', orderlinevals)
 
         if ctx.get('shoporderlinevals', False):
             orderlinevals.update(ctx['shoporderlinevals'])
@@ -627,11 +627,11 @@ class sale_shop(models.Model):
             [('unique_sales_line_rec_no', '=', resultval.get('unique_sales_line_rec_no')),
              ('product_id', '=', product.id), ('order_id', '=', saleorderid.id)])
         if not get_lineids:
-            _logger.info('orderlinevals==== %s', orderlinevals)
+            logger.info('orderlinevals==== %s', orderlinevals)
             saleorderlineid = saleorderline_obj.create(orderlinevals)
         else:
             saleorderlineid = get_lineids[0].id
-        _logger.info('**********saleorderlineid**** %s', saleorderlineid)
+        logger.info('**********saleorderlineid**** %s', saleorderlineid)
         return saleorderlineid
 
     def createShippingProduct(self):
@@ -732,7 +732,7 @@ class sale_shop(models.Model):
         partnerinvoiceaddress_id = self.updatePartnerInvoiceAddress(resultval) or False
         partner_id = partnerinvoiceaddress_id
         print("partner_id--------", partner_id)
-        _logger.info('invoice==== %s', partnerinvoiceaddress_id)
+        logger.info('invoice==== %s', partnerinvoiceaddress_id)
         if resultval.get('ShippingName', False):
             partnershippingaddress_id = self.updatePartnerShippingAddress(resultval) or False
         else:
@@ -762,8 +762,8 @@ class sale_shop(models.Model):
         else:
             date_order = resultval['PurchaseDate']
         print("resultval['PaymentMethod']", resultval['PaymentMethod'])
-        _logger.info('===resultval====>>>%s', resultval)
-        _logger.info('===PaymentMethod====>>>%s', resultval['PaymentMethod'])
+        logger.info('===resultval====>>>%s', resultval)
+        logger.info('===PaymentMethod====>>>%s', resultval['PaymentMethod'])
         if resultval.get('PaymentMethod', False) and resultval['PaymentMethod'] != 'None':
             print("resultval.get('PaymentMethod',False) and resultval['PaymentMethod'] != 'None'")
             payment_ids = payment_method_obj.search([('code', '=', resultval['PaymentMethod'])])
@@ -779,7 +779,7 @@ class sale_shop(models.Model):
                         {'name': resultval['PaymentMethod'], 'code': resultval['PaymentMethod'],
                          'acquirer_id': acq_obj[0].id, 'acquirer_ref': acq_obj[0].name, 'partner_id': partner_id.id})
         print("===ctx====>>>", ctx)
-        _logger.info('===ctx====>>>%s', ctx)
+        logger.info('===ctx====>>>%s', ctx)
         ordervals = {
             'picking_policy': shop_data.picking_policy or 'direct',
             'order_policy': resultval.get('order_policy', False) or 'picking',
@@ -820,12 +820,12 @@ class sale_shop(models.Model):
         return saleorderid
 
     def createOrderIndividual(self, shop_data, resultval):
-        '''
+        """
         This function is used to create orders
         parameters:
             shop_data :- Browse records
             resultvals :- dictionary of all the order data
-        '''
+        """
         saleorder_obj = self.env['sale.order']
         log_obj = self.env['ecommerce.logs']
         ctx = self._context.copy()
@@ -854,7 +854,7 @@ class sale_shop(models.Model):
                 print("manageSaleOrderLineShipping")
                 self.manageSaleOrderLineShipping(shop_data, saleorderid, resultval)
 
-            _logger.info('**********saleorderlineid**** %s', saleorderlineid)
+            logger.info('**********saleorderlineid**** %s', saleorderlineid)
         self._cr.commit()
         return saleorderid
 
@@ -877,7 +877,7 @@ class sale_shop(models.Model):
     #
     #        sale_data = saleorderid
     #        print"+++++++++++sale_data=======>>+++++++++++",sale_data
-    ##        log_obj.log_data(cr,uid,"context======",context)
+    #        log_obj.log_data(cr,uid,"context======",context)
     #        print"sale_data.import_unique_id==========>>>>",sale_data.import_unique_id
     #        ctx = dict(self._context)
     #        if sale_data.import_unique_id == ctx['import_unique_id']:

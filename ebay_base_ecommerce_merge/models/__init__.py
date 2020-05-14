@@ -4,7 +4,13 @@ from . import stock
 from . import payment
 from . import log
 from . import invoice
-from . import attribute
 from . import product_images
 from . import product
 from . import res_partner
+from . import template
+from . import ebayerp_osv
+from . import ebay
+from . import delivery
+from . import attribute
+from . import list_item
+from . import ebay_oauth
