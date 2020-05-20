@@ -1,31 +1,14 @@
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError, ValidationError
-import time
-import pytz
 import datetime
-from pytz import timezone
-import datetime
-from datetime import timedelta
 # import libxml2
-import uuid
-from operator import itemgetter
-from itertools import groupby
-import odoo.netsvc
 import logging
+import time
+from datetime import timedelta
+import base64
+from lxml import etree
+from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 logger = logging.getLogger(__name__)
-from time import gmtime, strftime
-import urllib
-from xml.dom.minidom import parse, parseString
-from random import randint
-import math
-import base64
-import urllib
-from base64 import b64decode
-from lxml import etree
-import logging
-
-import xml.etree.ElementTree as ET
 
 
 class site_details(models.Model):

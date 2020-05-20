@@ -340,7 +340,8 @@ class sale_shop(models.Model):
                         product_ids = prod_obj.search([('default_code', '=', line['StockSKU'])])
                         if product_ids:
                             li.remove(line['StockSKU'])
-                            if shop_name.name.lower().find(line['Source'].lower()) != -1 and line['Sub Source'].lower() == "ebay0":
+                            if shop_name.name.lower().find(line['Source'].lower()) != -1 and line[
+                                'Sub Source'].lower() == "ebay0":
                                 vals = {
                                     'name': line['ChannelId'],
                                     'ebay_title': line['ChannelItemName'],

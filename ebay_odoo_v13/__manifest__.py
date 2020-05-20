@@ -13,14 +13,14 @@
         Import Price/Stock\n
         Export Price/Stock\n
     """,
-    "website" : "www.planet-odoo.com",
+    "website": "www.planet-odoo.com",
     'images': [],
-    "category" : "ecommerce",
+    "category": "ecommerce",
     'summary': 'Ebay integration',
     "demo": [],
-	"price": 499.99,
+	'price': 499.99,
 	'currency': 'EUR',
-    "data" : [
+    "data": [
 
             'security/ir.model.access.csv',
             'data/ebay.site.csv',
@@ -41,7 +41,7 @@
             'view/oauth_thank_you_template.xml',
             'view/product_view.xml'
             # 'wizard/update_marketplace_price_view.xml',
-#            'channel2.csv'
+            #            'channel2.csv'
     ],
     'auto_install': False,
     "installable": True,

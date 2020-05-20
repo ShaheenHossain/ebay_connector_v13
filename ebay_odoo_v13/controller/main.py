@@ -26,11 +26,14 @@ class ebay_oauth(http.Controller):
         outh = client_id + ':' + client_secret
         basic = base64.b64encode(outh.encode('utf-8'))
         print("---basic.decode('utf-8')-------", basic.decode('utf-8'))
-        request_url = 'https://api.ebay.com/identity/v1/oauth2/token'
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Basic ' + basic.decode('utf-8'),
-        }
+        if ebay_oauth[0].sandbox:
+            request_url = 'https://api.sandbox.ebay.com/identity/v1/oauth2/token'
+        else:
+            request_url = 'https://api.ebay.com/identity/v1/oauth2/token'
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + basic.decode('utf-8'),
+            }
         payload = {
             'grant_type': 'authorization_code',
             'code': auth_code,

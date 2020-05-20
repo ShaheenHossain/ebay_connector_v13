@@ -78,7 +78,7 @@ class sale_shop(models.Model):
         currency = shop_data.currency.name
         if not currency:
             #            raise osv.except_osv(_('Warning !'), _("Please Select Currency For Shop - %s")%(shop_data.name))
-            raise UserError(_('Warning !'))
+            raise UserError(_("Please Select Currency For Shop - %s") % shop_data.name)
         try:
             result = ebayerp_osv_obj.call(inst_lnk, 'RelistFixedPriceItem', itemId, qty, price, currency)
         except Exception as e:
@@ -157,13 +157,13 @@ class sale_shop(models.Model):
         inst_name = inst_lnk.name
         if not user_id:
             #            raise osv.except_osv(_('Warning !'), _("Please Enter User ID For Instance %s")%(inst_name))
-            raise UserError(_('Warning !'), _("Please Enter User ID For Instance %s") % inst_name)
+            raise UserError(_("Please Enter User ID For Instance %s") % inst_name)
         if not store_name:
             store_datas = connection_obj.call(inst_lnk, 'GetStore', user_id, site_id)
 
             if not store_datas:
                 #                raise osv.except_osv(_('Warning !'), _("No Store For Shop %s")%(shop_name))
-                raise UserError(_('Warning !'), _("No Store For Shop %s") % (shop_name))
+                raise UserError(_("No Store For Shop %s") % shop_name)
             for store_dic in store_datas:
                 for store_info in store_dic['StoreInfo']:
                     store_desc = False
@@ -213,7 +213,7 @@ class sale_shop(models.Model):
             siteid = site_id
         else:
             #            raise osv.except_osv(_('Warning !'), _("Please Select Site ID in %s shop")%(shop_name))
-            raise UserError(_('Warning !'), _("Please Select Site ID in %s shop") % (shop_name))
+            raise UserError(_("Please Select Site ID in %s shop") % shop_name)
         currentTimeTo = datetime.datetime.utcnow()
         currentTimeTo = time.strptime(str(currentTimeTo), "%Y-%m-%d %H:%M:%S.%f")
         currentTimeTo = time.strftime("%Y-%m-%dT%H:%M:%S.000Z", currentTimeTo)

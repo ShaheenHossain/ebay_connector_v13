@@ -187,8 +187,8 @@ class Token:
 
     def __init__(self, DevID, AppID, CertID, Token, ServerURL):
         self.Session.Initialize(DevID, AppID, CertID, Token, ServerURL)
-        self.RequestUserId = 'TESTUSER_aasim.ansari'
-        self.RequestPassword = 'Makaami_5kaam'
+        self.RequestUserId = 'TESTUSER_planetodoo'
+        self.RequestPassword = 'planetodoo@123'
 
     def Get(self):
         api = Call()
@@ -233,7 +233,7 @@ class eBayTime:
 
         responseDOM = api.MakeCall("GeteBayOfficialTime")
         timeElement = responseDOM.getElementsByTagName('EBayTime')
-        if (timeElement != []):
+        if timeElement != []:
             return timeElement[0].childNodes[0].data
 
         """ force garbage collection of the DOM object """
@@ -394,15 +394,15 @@ class GetOrderTransactions:
 
         shipping_details_tag = responseDOM.getElementsByTagName('ShippingDetails')
         shippingInfo = gSellerTrans.getShipDetailsInfo(
-            shipping_details_tag[0])  ### 0th bcoz there are also other ShippingDetails tag
+            shipping_details_tag[0])  # 0th bcoz there are also other ShippingDetails tag
 
         shippingserviceInfo = gSellerTrans.getShippingServiceInfo(
             responseDOM.getElementsByTagName('ShippingServiceSelected')[
-                0])  ### 0th bcoz there are also other ShippingDetails tag
+                0])  # 0th bcoz there are also other ShippingDetails tag
 
         exttransactionInfo = gSellerTrans.getExternalTransactionInfo(
             responseDOM.getElementsByTagName('ExternalTransaction')[
-                0])  ### 0th bcoz there are also other ShippingDetails tag
+                0])  # 0th bcoz there are also other ShippingDetails tag
 
         transInfo = gSellerTrans.getTransaction(responseDOM.getElementsByTagName('Transaction'))
         for tInfo in transInfo:
@@ -572,7 +572,7 @@ class CreateDSRSummaryByPeriodRequest:
         responseDOM = api.MakeCall("createDSRSummaryByPeriod")
 
         job_id = responseDOM.getElementsByTagName('jobId')
-        if (job_id != []):
+        if job_id != []:
             return job_id[0].childNodes[0].data
         else:
             return False
